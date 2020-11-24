@@ -1,0 +1,337 @@
+{% extends 'base/base.html'%}
+
+{% block style%}
+
+
+    <link href="{{url_for('static',filename='main/css/mystyle.css')}}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+{% endblock %}
+
+{% block content %}
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Campaign Details</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item">Campaign</li>
+                        <li class="breadcrumb-item active">Campaign Details</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-lg-8 col-xlg-9">
+                        <div class="row rowChart">
+                                        <div class="col-lg-8 col-xlg-6 chart">
+                                            <canvas id="myChart4" width="250" height="200"></canvas>
+                                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xlg-3  containerr">
+                    <script>
+
+                 var urlParams = new URLSearchParams(window.location.search);
+                 var keys = urlParams.get('campaign').toString();
+                 console.log(keys);
+                 var url = '/campaign?name='+ keys;
+                 var aPromise = fetch(url);
+                 aPromise
+                   .then(function(response) {
+                       console.log("OK! Server returns a response object:");
+                       console.log(response);
+
+                       if(!response.ok) {
+                          throw new Error("HTTP error, status = " + response.status);
+                       }
+                       var myJSON_promise = response.json();
+                       return myJSON_promise;
+                   })
+                   .then(function(myJSON) {
+                       console.log(myJSON);
+                       let html = '';
+                       var total_comments = parseInt(myJSON.total_comments)
+                    let htmlSegment =    `
+                        <div class="card card_comment">
+                            <div class="card-body">
+                                <h4 class="card-title">Total Comment</h4>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <h4 class="font-medium m-b-0"></i>${total_comments}</h4></div>
+                                    <div class="ml-auto">
+                                        <div id="spark8"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        html = htmlSegment;
+                        let container = document.querySelector('.containerr');
+                        container.innerHTML = html;
+                   })
+                   .catch(function(error)  {
+                       console.log("Noooooo! Something error:");
+                       console.log(error);
+                   });
+                    </script>
+
+                        <script>
+
+                var urlParams = new URLSearchParams(window.location.search);
+                var keys = urlParams.toString();
+                console.log(keys);
+                var url = '/comment?'+ keys;
+                 var aPromise = fetch(url);
+                 aPromise
+                   .then(function(response) {
+                       console.log("OK! Server returns a response object:");
+                       console.log(response);
+
+                       if(!response.ok) {
+                          throw new Error("HTTP error, status = " + response.status);
+                       }
+                       var myJSON_promise = response.json();
+                       return myJSON_promise;
+                   })
+                   .then(function(myJSON) {
+                       console.log(myJSON);
+
+                        let html = '';
+                        var totalReact = 0;
+                        var totalLike = 0;
+                        var totalLove = 0;
+                        var totalHaHa = 0;
+                       myJSON.forEach(element =>{
+                             totalReact = totalReact + parseInt(element.reactions);
+                             totalLike = totalLike + parseInt(element.like);
+                             totalLove = totalLove + parseInt(element.love);
+                             totalHaHa = totalHaHa + parseInt(element.haha) + parseInt(element.wow);
+
+                    });
+                    let htmlSegment =    `
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Total React</h4>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <h4 class="font-medium m-b-0"></i>${totalReact}</h4></div>
+                                    <div class="ml-auto">
+                                        <div id="spark9"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    `;
+                        html += htmlSegment;
+                        let container = document.querySelector('.card_comment');
+                        container.insertAdjacentHTML('afterend', html);
+                   })
+                   .catch(function(error)  {
+                       console.log("Noooooo! Something error:");
+                       console.log(error);
+                   });
+                    </script>
+                        </div>
+                </div>
+
+                                    <div class="row container-Campaign" style="margin-top:200px">
+<script>
+          var urlParams = new URLSearchParams(window.location.search);
+                 var keys = urlParams.get('campaign').toString();
+                 console.log(keys);
+                 var url = '/campaign?name='+ keys;
+                 var aPromise = fetch(url);
+                 aPromise
+                   .then(function(response) {
+                       console.log("OK! Server returns a response object:");
+                       console.log(response);
+
+                       if(!response.ok) {
+                          throw new Error("HTTP error, status = " + response.status);
+                       }
+                       var myJSON_promise = response.json();
+                       return myJSON_promise;
+                   })
+                   .then(function(myJSON) {
+                       console.log(myJSON);
+                       let html = '';
+
+                    let htmlSegment =    `
+                        <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Campaign Name</h4>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <h4 class="font-medium m-b-0" ID="status">${myJSON.name}</h4></div>
+                                    <div class="ml-auto">
+                                        <div id="spark1x"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Start Date - End Date</h4>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <h4 class="font-medium m-b-0">${new Date(myJSON["startTime"]["$date"]).toLocaleDateString("ca-ES")} - ${new Date(myJSON["endTime"]["$date"]).toLocaleDateString("ca-ES")}</h4></div>
+                                    <div class="ml-auto">
+                                        <div id="spark2x"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Description</h4>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <h4 class="font-medium m-b-0">${myJSON.description}</h4></div>
+                                    <div class="ml-auto">
+                                        <div id="spark3x"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Key Word</h4>
+                                <div class="d-flex">
+                                    <div class="align-self-center">
+                                        <h4 class="font-medium m-b-0">${myJSON.keyword}</h4></div>
+                                    <div class="ml-auto">
+                                        <div id="spar4x"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                        html = htmlSegment;
+                        let container = document.querySelector('.container-Campaign');
+                        container.innerHTML = html;
+                   })
+                   .catch(function(error)  {
+                       console.log("Noooooo! Something error:");
+                       console.log(error);
+                   });
+</script>
+
+                </div>
+
+
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Posts</h4>
+                        <div class="message-box">
+                            <div class="message-widget message-scroll">
+                <script>
+                var urlParams = new URLSearchParams(window.location.search);
+                var keys = urlParams.toString();
+                console.log(keys);
+                var url = '/comment?'+ keys;
+                 var aPromise = fetch(url);
+                 aPromise
+                   .then(function(response) {
+                       console.log("OK! Server returns a response object:");
+                       console.log(response);
+
+                       if(!response.ok) {
+                          throw new Error("HTTP error, status = " + response.status);
+                       }
+                       var myJSON_promise = response.json();
+                       return myJSON_promise;
+                   })
+                   .then(function(myJSON) {
+                       console.log(myJSON);
+
+                        let html = '';
+                       myJSON.forEach(element =>{
+                                            let htmlSegment =    `<a href="{{url_for('postcomment')}}?post_id=${element.post_id}">
+                                    <div class="user-img"> <img src="../static/assets/images/users/1.jpg" alt="user" class="img-circle" /> <span class="profile-status online pull-right"></span> </div>
+                                    <div class="mail-contnet">
+                                        <h5>${element.post_id}</h5> <span class="mail-desc">${element.text}</span> <span class="time">${new Date(element["date"]["$date"]).toLocaleDateString("ca-ES")}</span></div>
+                                </a>`;
+                                     html += htmlSegment;
+                    });
+                        let container = document.querySelector('.message-widget');
+                        container.innerHTML = html;
+                   })
+                   .catch(function(error)  {
+                       console.log("Noooooo! Something error:");
+                       console.log(error);
+                   });
+
+</script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<script>
+                var urlParams = new URLSearchParams(window.location.search);
+                var keys = urlParams.get('campaign').toString();
+                console.log(keys);
+                var url = '/campaign?name='+ keys;
+                 var aPromise = fetch(url);
+                 aPromise
+                   .then(function(response) {
+                       console.log("OK! Server returns a response object:");
+                       console.log(response);
+
+                       if(!response.ok) {
+                          throw new Error("HTTP error, status = " + response.status);
+                       }
+                       var myJSON_promise = response.json();
+                       return myJSON_promise;
+                   })
+                   .then(function(myJSON) {
+                        var total_comments = parseInt(myJSON.total_comments)
+                        var total_pos = parseInt(myJSON.total_pos);
+                        var total_neg = parseInt(myJSON.total_neg);
+                        var total_neu = parseInt(myJSON.total_neu);
+
+                        let labels4 = ['Positive', 'Negative', 'Neutral'];
+                        let data4 = [total_pos, total_neg, total_neu];
+                        let colors4 = ['#49A9EA', '#36CAAB', '#34495E'];
+
+                        let myChart4 = document.getElementById("myChart4").getContext('2d');
+
+                        let chart4 = new Chart(myChart4, {
+                        type: 'pie',
+                        data: {
+                        labels: labels4,
+                        datasets: [ {
+                        data: data4,
+                        backgroundColor: colors4
+                        }]
+                        },
+                        options: {
+                        title: {
+                            text: "Campaign data analysis",
+                            display: true
+                            }
+                            }
+                        });
+                   })
+                   .catch(function(error)  {
+                       console.log("Noooooo! Something error:");
+                       console.log(error);
+                   });
+
+</script>
+{%endblock%}

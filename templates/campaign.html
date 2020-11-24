@@ -1,0 +1,96 @@
+{% extends 'base/base.html'%}
+{% block style%}
+
+{% endblock %}
+{% block content %}
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">List of Campaign</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item">Campaign</li>
+                        <li class="breadcrumb-item active">Campaign List</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row containerr ">
+                <script>
+                var url = '/campaign/all'
+                 var aPromise = fetch(url);
+                 aPromise
+                   .then(function(response) {
+                       console.log("OK! Server returns a response object:");
+                       console.log(response);
+
+                       if(!response.ok) {
+                          throw new Error("HTTP error, status = " + response.status);
+                       }
+                       var myJSON_promise = response.json();
+                       return myJSON_promise;
+                   })
+                   .then(function(myJSON) {
+                       let html = '';
+                       var i = -1;
+                       myJSON.forEach(element =>{
+                       i = i +1;
+                        let htmlSegment =    `
+                        <div class="col-md-6 col-lg-6 col-xlg-4">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-3 text-center">
+                                    <a href="app-contact-detail.html"><img src="../static/assets/images/users/1.jpg" alt="user" class="img-circle img-responsive" /></a>
+                                </div>
+                                <div class="col-md-8 col-lg-9">
+                                    <h3 class="box-title m-b-10 text-info" style="font-weight:600">${element.name}</h3>
+                                    <div class="row" style="margin-bottom:10px">
+                                        <div class="col-md-6">
+                                        <i class="fa fa-calendar text-info m-r-15"></i><span style="font-weight:600">${new Date(element["startTime"]["$date"]).toLocaleDateString("ca-ES")}</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                        <i class="fa fa-calendar text-info m-r-15"></i><span style="font-weight:600">${new Date(element["endTime"]["$date"]).toLocaleDateString("ca-ES")}</span>
+                                        </div>
+                                    </div>
+                                    <a href="#" id="status_${i}" class="checkstatus" style="font-weight:700">${element.status}</a>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('detailcampaigns') }}?campaign=${element.name}" class="btn btn-info m-t-10">View</a>
+                        </div>
+                    </div>
+                            `;
+                     html += htmlSegment;
+                    });
+                        let container = document.querySelector('.containerr');
+                        container.innerHTML = html;
+
+
+                        for (var i = 0; i < document.querySelectorAll('.checkstatus').length; i = i + 1) {
+                            if (document.querySelectorAll('.checkstatus')[i].textContent == "done") {
+                                document.querySelector('#status_'+i).style.color = "blue";
+
+                                }
+                            if (document.querySelectorAll('.checkstatus')[i].textContent == "working") {
+                                    document.querySelector('#status_'+i).style.color = "red";
+
+                            }
+                        }
+
+                   })
+                   .catch(function(error)  {
+                       console.log("Noooooo! Something error:");
+                       console.log(error);
+                   });
+
+
+                </script>
+                </div>
+            </div>
+
+
+{%endblock%}
+
+{% block js %}
+{%endblock%}

@@ -1,0 +1,131 @@
+{% extends 'base/base.html'%}
+
+{% block content %}
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">New Campaign</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">SERVICES</a></li>
+                        <li class="breadcrumb-item">pages</li>
+                        <li class="breadcrumb-item active">New Campaign</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-outline-info">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white">Create New Campaign</h4>
+                            </div>
+                            <div class="card-body">
+                                <form id="form" method="post">
+                                    <div class="form-body">
+                                        <h3 class="card-title">Campaign Info</h3>
+                                        <hr />
+                                                <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Campaign name</label>
+                                                    <input type="text" name="name" id="name" class="form-control" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Description</label>
+                                                    <input type="text" name="description" id="description" class="form-control" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                <div class="form-group has-info">
+                                                    <label class="control-label">Start Date</label>
+                                                    <input class="form-control" name="startTime" id="startTime" type="date" value="2020-11-08" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                <div class="form-group has-info">
+                                                    <label class="control-label">End Date</label>
+                                                    <input class="form-control" name="endTime" id="endTime" type="date" value="2020-11-12" />
+                                                </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                <div class="form-group has-info">
+                                                <label class="control-label">Link of Facebook Groups/Fanpages</label>
+                                                <input type="text" name="links_1" id="links_1" class="form-control" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                <div class="form-group has-info">
+                                                <label class="control-label">Key words</label>
+                                                <input type="text" name="keyword" class="form-control" id="keyword" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-12">
+
+                                                        <div class="form-actions text-center">
+
+                                                        <button type="button"  class="btn btn-inverse">Cancel</button>
+                                                        <input type="submit" value="Create" onclick="alert('Quá trình tạo chiến dịch có thể mất vài phút ! Vui lòng cập nhật lại tại danh sách chiến dịch');" class="btn btn-success">
+                                                    </div>
+
+
+                                                </div>
+                                        <!--/row-->
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{%endblock%}
+
+{% block js %}
+<script>
+var form = document.getElementById('form');
+
+form.addEventListener('submit',function(e){
+    e.preventDefault()
+    var name = document.getElementById('name').value;
+    var description = document.getElementById('description').value;
+    var startTime = document.getElementById('startTime').value;
+    var endTime = document.getElementById('endTime').value;
+    var links_1 = document.getElementById('links_1').value;
+    var links = links_1.split(",");
+    var keyword = document.getElementById('keyword').value;
+
+    fetch("/campaign/create",{
+        method:'POST',
+        body:JSON.stringify({
+            name:name,
+            description:description,
+            startTime:startTime,
+            endTime:endTime,
+            links:links,
+            keyword:keyword
+        }),
+        headers:{
+            "Content-Type":"application/json; charset=UTF-8"
+        }
+    })
+    .then(function(response){
+        return response.json()
+    })
+    .then(function(data){
+        console.log(data)
+
+    })
+})
+</script>
+{%endblock%}
